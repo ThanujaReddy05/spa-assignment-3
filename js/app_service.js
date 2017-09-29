@@ -12,6 +12,12 @@ angular.module('clickerApp').service('clickerService', ['$cookies', '$interval',
   this.increment = () =>
     this.total += this.amount
 
+    if (this.autoClickerCount > 0) {
+      for(let i = 0; i < this.autoClickerCount; i++) {
+        this.autoClickers.push($interval(this.increment, 1000))
+      }
+    }
+
   this.decrement = (amount) =>
       this.total -= amount
 
@@ -28,8 +34,8 @@ angular.module('clickerApp').service('clickerService', ['$cookies', '$interval',
     this.autoClickerCost *= 2
   }
 
-  this.canClick = (amount) =>
-    this.total < amount
+  this.canClick = (cost) =>
+    this.total < cost
 
   this.reset = () => {
     this.amount = 1
@@ -51,12 +57,6 @@ angular.module('clickerApp').service('clickerService', ['$cookies', '$interval',
 
     $cookies.put('multiplierCost', this.multiplierCost)
     $cookies.put('autoClickerCost', this.autoClickerCost)
-  }
-
-  if (this.autoClickerCount > 0) {
-    for(let i = 0; i < this.autoClickerCount; i++) {
-      this.autoClickers.push($interval(this.increment, 1000))
-    }
   }
 
 }])
